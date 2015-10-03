@@ -15,10 +15,14 @@ public class PlayerController : MonoBehaviour {
 
 	private bool doubleJumped;
 
+	private Animator anim;
+
 	// Use this for initialization
 	void Start () {
-		//Instantiate rigidBody2D object
+		//Get the rigidBody2D object
 		rigidBody2D = GetComponent<Rigidbody2D>();
+		//Get the Animator object
+		anim = GetComponent<Animator>();
 	}
 
 	void FixedUpdate(){
@@ -27,6 +31,10 @@ public class PlayerController : MonoBehaviour {
 	}
 	// Update is called once per frame
 	void Update () {
+
+		//Set conditions for animation
+		anim.SetBool("Grounded", grounded);
+
 		//Input.GetKeyDown means "Key was Pressed", KeyCode.Space == "Spacebar"
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			//Check if the player is touching the ground
@@ -55,6 +63,18 @@ public class PlayerController : MonoBehaviour {
 		if (Input.GetKey(KeyCode.A)) {
 			//move our player in the negative x-direction
 			Move(-moveSpeed);
+		}
+
+		//Check if player is moving for animation
+		anim.SetFloat("Speed", Mathf.Abs(rigidBody2D.velocity.x));
+
+		//If character is moving to the left, keep scale normal
+		if (rigidBody2D.velocity.x > 0) {
+			transform.localScale = new Vector3(1f, 1f, 1f);
+		} 
+		//If character is moving to the left, relect the player
+		else if (rigidBody2D.velocity.x < 0) {
+			transform.localScale = new Vector3(-1f, 1f, 1f);
 		}
 
 	}
