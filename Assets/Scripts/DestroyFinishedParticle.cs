@@ -12,9 +12,11 @@ public class DestroyFinishedParticle : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		//If the particle system is still playing, do nothing
 		if (thisParticleSystem.isPlaying) {
 			return;
 		}
+		//else destory the particle system
 		Destroy(gameObject);
 	}
 }

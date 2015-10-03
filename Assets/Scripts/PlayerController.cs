@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour {
 	[HideInInspector] public Rigidbody2D rigidBody2D;
 
 	public float moveSpeed;
+	private float moveVelocity;
 	public float jumpHeight;
 
 	public Transform groundCheck;
@@ -54,16 +55,20 @@ public class PlayerController : MonoBehaviour {
 				doubleJumped = true;
 			}
 		}
+		//To prevent sliding, make sure to start at velocity 0
+		moveVelocity = 0f;
 		//Input.GetKey means "Key is Pressed", KeyCode.D == "D"
 		if (Input.GetKey(KeyCode.D)) {
-			//move our player in the positive x-direction
-			Move(moveSpeed);
+			//set moveVelocity in the positive x-direction
+			moveVelocity = moveSpeed;
 		}
 		//Input.GetKeyDown means "Key was Pressed", KeyCode.A means "A"
 		if (Input.GetKey(KeyCode.A)) {
-			//move our player in the negative x-direction
-			Move(-moveSpeed);
+			//set moveVelocity in the negative x-direction
+			moveVelocity = -moveSpeed;
 		}
+		//move our player in the x-direction
+		Move(moveVelocity);
 
 		//Check if player is moving for animation
 		anim.SetFloat("Speed", Mathf.Abs(rigidBody2D.velocity.x));

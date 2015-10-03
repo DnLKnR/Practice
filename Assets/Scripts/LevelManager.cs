@@ -10,6 +10,8 @@ public class LevelManager : MonoBehaviour {
 	public GameObject deathParticle;
 	public GameObject respawnParticle;
 
+	public int pointPenaltyOnDeath;
+
 	public float respawnDelay;
 
 	// Use this for initialization
@@ -29,13 +31,17 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public IEnumerator RespawnPlayerCo(){
+		//Start the death particle system at the given location
 		Instantiate(deathParticle, player.transform.position, player.transform.rotation);
 		//Turn player off
 		TogglePlayer(false);
+		//Take away points for dying
+		ScoreManager.AddPoints(-pointPenaltyOnDeath);
 		//Timer set up to wait before respawning the player
 		yield return new WaitForSeconds(respawnDelay);
 		//Reset the players position to their last checkpoint position
 		player.transform.position = currentCheckpoint.transform.position;
+		//Start the respawn particle system at the given location
 		Instantiate(respawnParticle, currentCheckpoint.transform.position, currentCheckpoint.transform.rotation);
 		Debug.Log ("Player Respawn");
 		//Turn player back on
@@ -43,7 +49,12 @@ public class LevelManager : MonoBehaviour {
 	}
 
 	public void TogglePlayer(bool isEnabled){
+		//Get Renderer object from the player
 		Renderer renderer = player.GetComponent<Renderer>();
+		//Get RigidBody2D object from player
+		Rigidbody2D rigidBody2D = player.GetComponent<Rigidbody2D>();
+		//Stop all player movement
+		rigidBody2D.velocity = Vector2.zero;
 		//Disable player being controlled
 		player.enabled = isEnabled;
 		//Disable player form being visible
