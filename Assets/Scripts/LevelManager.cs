@@ -14,13 +14,14 @@ public class LevelManager : MonoBehaviour {
 
 	public float respawnDelay;
 
-	private float gravityScale;
+	private CameraController camera;
+
 	// Use this for initialization
 	void Start () {
 		//Get PlayerController Object that already exists in the scene
 		player = FindObjectOfType<PlayerController>();
-		//Store the default gravityScale
-		gravityScale = player.GetComponent<Rigidbody2D>().gravityScale;
+		//Get CameraController Object that already exists in the scene
+		camera = FindObjectOfType<CameraController>();
 	}
 	
 	// Update is called once per frame
@@ -56,17 +57,13 @@ public class LevelManager : MonoBehaviour {
 		Renderer renderer = player.GetComponent<Renderer>();
 		//Get RigidBody2D object from player
 		Rigidbody2D rigidBody2D = player.GetComponent<Rigidbody2D>();
-		//If disabling, turn gravity off, else turn it back on
-		if (isEnabled) {
-			rigidBody2D.gravityScale = gravityScale;
-		} else {
-			rigidBody2D.gravityScale = 0f;
-		}
 		//Stop all player movement
 		rigidBody2D.velocity = Vector2.zero;
-		//Disable player being controlled
+		//Enable/Disable player being controlled
 		player.enabled = isEnabled;
-		//Disable player form being visible
+		//Enable/Disable player form being visible
 		renderer.enabled = isEnabled;
+		//Enable/Disable camera following
+		camera.isFollowing = isEnabled;
 	}
 }

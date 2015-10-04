@@ -18,6 +18,9 @@ public class PlayerController : MonoBehaviour {
 
 	private Animator anim;
 
+	public Transform firePoint;
+	public GameObject ninjaStar;
+
 	// Use this for initialization
 	void Start () {
 		//Get the rigidBody2D object
@@ -80,6 +83,9 @@ public class PlayerController : MonoBehaviour {
 		//If character is moving to the left, relect the player
 		else if (rigidBody2D.velocity.x < 0) {
 			transform.localScale = new Vector3(-1f, 1f, 1f);
+		}
+		if (Input.GetKeyDown(KeyCode.Return)) {
+			Instantiate(ninjaStar, firePoint.position, firePoint.rotation);
 		}
 
 	}
